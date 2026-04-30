@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abhijit Dutta — Graphic Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f2f0eb;
+    --red: #c0392b;
+    --green: #39ff14;
+    --gray: #1a1a1a;
+    --gray-mid: #2a2a2a;
+    --text-muted: #888;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--green);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(57,255,20,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, opacity 0.2s;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.12em;
+    color: var(--white);
+  }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--green); }
+  .nav-cta {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--green);
+    padding: 0.55rem 1.4rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.8; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+  .hero-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 1.2rem;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 14vw, 14rem);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title .outline {
+    -webkit-text-stroke: 1.5px var(--white);
+    color: transparent;
+  }
+  .hero-title .script {
+    font-family: 'Caveat', cursive;
+    font-size: 0.45em;
+    color: var(--green);
+    -webkit-text-stroke: 0;
+    display: block;
+    margin-top: -0.1em;
+    letter-spacing: 0.02em;
+  }
+  .hero-sub {
+    display: flex; align-items: center; gap: 3rem;
+    margin-top: 2.5rem;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-bio {
+    max-width: 380px;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    font-weight: 300;
+    border-left: 2px solid var(--red);
+    padding-left: 1.2rem;
+  }
+  .hero-bio strong { color: var(--white); font-weight: 500; }
+  .hero-stats { display: flex; gap: 2.5rem; }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    line-height: 1;
+    color: var(--white);
+  }
+  .stat-num span { color: var(--red); }
+  .stat-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .hero-bg-text {
+    position: absolute;
+    right: -2rem; top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28vw;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.03);
+    color: transparent;
+    pointer-events: none;
+    line-height: 1;
+    z-index: 0;
+  }
+
+  /* Section base */
+  section { padding: 7rem 3rem; }
+  .section-header {
+    display: flex; align-items: center; gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+  }
+  .section-title-group { flex: 1; }
+  .section-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 0.4rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .section-title .outline {
+    -webkit-text-stroke: 1px var(--white);
+    color: transparent;
+  }
+  .divider {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+  }
+
+  /* ABOUT */
+  .about { background: var(--gray); }
+
+  /* SOCIAL MEDIA section */
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .post-card {
+    background: var(--gray-mid);
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .post-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(57,255,20,0.3);
+  }
+  .post-card-inner {
+    padding: 1.5rem;
+    aspect-ratio: 1/1;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    background: linear-gradient(135deg, #1a1a1a, #111);
+    position: relative; overflow: hidden;
+  }
+  .post-card-inner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gradient, linear-gradient(135deg, #1a0000, #0a0a0a));
+    opacity: 0.7;
+  }
+  .post-badge {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--red);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    color: white;
+    z-index: 1;
+  }
+  .post-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    position: relative; z-index: 1;
+  }
+  .post-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    position: relative; z-index: 1;
+  }
+  .card-info {
+    padding: 1rem 1.2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .card-platform {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .card-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+  /* PRINTING MEDIA */
+  .print-section { background: var(--gray); }
+  .print-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .print-card {
+    background: var(--gray-mid);
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .print-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(192,57,43,0.4);
+  }
+  .print-card.wide { grid-column: 1 / -1; }
+  .print-visual {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 0.08em;
+    position: relative; overflow: hidden;
+  }
+  .print-visual.menu-bg {
+    background: linear-gradient(135deg, #3d1a07, #7a3a10);
+  }
+  .print-visual.banner-bg {
+    background: linear-gradient(135deg, #1a3a1a, #2d5a2d);
+  }
+  .print-visual.catalog-bg {
+    background: linear-gradient(135deg, #3d2a1a, #6b4a2a);
+  }
+  .print-visual.wide-bg {
+    background: linear-gradient(135deg, #1a1a3d, #2a2a6b);
+    height: 160px;
+    font-size: 2.2rem;
+  }
+  .print-visual-icon {
+    font-size: 4rem;
+    opacity: 0.3;
+    position: absolute;
+    right: 1.5rem; top: 50%;
+    transform: translateY(-50%);
+  }
+  .print-info { padding: 1.2rem 1.5rem; }
+  .print-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.3rem;
+  }
+  .print-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* CNC section */
+  .cnc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .cnc-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .cnc-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(57,255,20,0.03), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .cnc-card:hover { border-color: rgba(57,255,20,0.3); }
+  .cnc-card:hover::before { opacity: 1; }
+  .cnc-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 6rem;
+    line-height: 1;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.1);
+    color: transparent;
+    margin-bottom: 1rem;
+  }
+  .cnc-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .cnc-name span { color: var(--green); font-family: 'Caveat', cursive; font-size: 1.2rem; }
+  .cnc-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+  .cnc-count {
+    margin-top: 1.5rem;
+    display: inline-block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    color: var(--green);
+    border: 1px solid rgba(57,255,20,0.3);
+    padding: 0.35rem 0.8rem;
+  }
+
+  /* CONTACT / CTA */
+  .cta-section {
+    background: var(--black);
+    text-align: center;
+    padding: 8rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: 'ABHi';
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 35vw;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.02);
+    color: transparent;
+    pointer-events: none;
+  }
+  .cta-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 1.5rem;
+  }
+  .cta-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    position: relative; z-index: 1;
+  }
+  .cta-title .outline {
+    -webkit-text-stroke: 1.5px var(--white);
+    color: transparent;
+  }
+  .cta-script {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: var(--green);
+    display: block;
+    margin-top: 0.5rem;
+    position: relative; z-index: 1;
+  }
+  .cta-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 2.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.08em;
+    color: var(--white);
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 1rem 2.5rem;
+    transition: all 0.25s;
+    position: relative; z-index: 1;
+  }
+  .cta-phone::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+    z-index: -1;
+  }
+  .cta-phone:hover { color: var(--black); border-color: var(--green); }
+  .cta-phone:hover::before { transform: scaleX(1); }
+  .cta-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 1.5s infinite; }
+  .cta-phone:hover .cta-dot { background: var(--black); }
+
+  /* Footer */
+  footer {
+    background: var(--gray);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.12em;
+  }
+  .footer-logo span { color: var(--red); }
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+  .footer-services {
+    display: flex; gap: 1.5rem;
+    list-style: none;
+  }
+  .footer-services li {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Scroll indicator */
+  .scroll-line {
+    position: absolute; bottom: 2rem; left: 3rem;
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-muted);
+    z-index: 1;
+  }
+  .scroll-line::before {
+    content: '';
+    display: block; width: 40px; height: 1px;
+    background: var(--green);
+    animation: widthPulse 2s infinite;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+  @keyframes widthPulse {
+    0%, 100% { width: 40px; }
+    50% { width: 60px; }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .hero { padding: 6rem 1.5rem 4rem; }
+    section { padding: 5rem 1.5rem; }
+    .print-grid, .cnc-grid { grid-template-columns: 1fr; }
+    .print-card.wide { grid-column: auto; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .footer-services { flex-wrap: wrap; justify-content: center; }
+    .hero-sub { flex-direction: column; gap: 1.5rem; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">ABH<span>i</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#social">Social</a></li>
+    <li><a href="#print">Print</a></li>
+    <li><a href="#cnc">CNC</a></li>
+  </ul>
+  <a href="tel:+9779825028893" class="nav-cta">Hire Me</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="hero-noise"></div>
+  <div class="hero-bg-text">AD</div>
+  <div class="hero-tag">Graphic Designer · Nepal</div>
+  <h1 class="hero-title">
+    PORT<span class="outline">FOLIO</span>
+    <span class="script">Abhijit Dutta</span>
+  </h1>
+  <div class="hero-sub">
+    <p class="hero-bio">
+      I'm a graphic designer focused on <strong>clean, impactful visuals</strong> for brands and digital platforms. A mix of creativity, precision, and practical design thinking.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">100<span>+</span></div>
+        <div class="stat-label">CNC Designs</div>
+      </div>
+      <div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Specialities</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-line">Scroll to explore</div>
+</section>
+
+<!-- Social Media Posts -->
+<section id="social" style="background: var(--black);">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-title-group">
+      <div class="section-tag">Category One</div>
+      <h2 class="section-title">SOCIAL MEDIA <span class="outline">POST</span></h2>
+    </div>
+    <div class="divider"></div>
+  </div>
+  <div class="social-grid">
+    <div class="post-card">
+      <div class="post-card-inner" style="--gradient: linear-gradient(135deg, #1a0a00, #3d1500);">
+        <span class="post-badge">Festival</span>
+        <div class="post-title">KRISHNA<br>JANMASHTAMI</div>
+        <div class="post-sub">Festive social post</div>
+      </div>
+      <div class="card-info">
+        <span class="card-platform">Instagram</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-card-inner" style="--gradient: linear-gradient(135deg, #001a0a, #003d15);">
+        <span class="post-badge">Product</span>
+        <div class="post-title">WALL<br>PANEL</div>
+        <div class="post-sub">ALTWOOD Premium Panels</div>
+      </div>
+      <div class="card-info">
+        <span class="card-platform">Instagram</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-card-inner" style="--gradient: linear-gradient(135deg, #1a0000, #5a0000);">
+        <span class="post-badge">Diwali</span>
+        <div class="post-title">HAPPY<br>DIWALI</div>
+        <div class="post-sub">Festive greeting design</div>
+      </div>
+      <div class="card-info">
+        <span class="card-platform">Instagram</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-card-inner" style="--gradient: linear-gradient(135deg, #0a1a00, #1a3d00);">
+        <span class="post-badge">New Year</span>
+        <div class="post-title">NEW<br>YEAR 2025</div>
+        <div class="post-sub">New Year celebration post</div>
+      </div>
+      <div class="card-info">
+        <span class="card-platform">Instagram</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-card-inner" style="--gradient: linear-gradient(135deg, #1a1200, #3d2a00);">
+        <span class="post-badge">Food</span>
+        <div class="post-title">SUPER<br>BURGER</div>
+        <div class="post-sub">Restaurant promo · 60% Off</div>
+      </div>
+      <div class="card-info">
+        <span class="card-platform">Instagram</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-card-inner" style="--gradient: linear-gradient(135deg, #0a0a1a, #1a1a3d);">
+        <span class="post-badge">Education</span>
+        <div class="post-title">ADMISSION<br>OPEN</div>
+        <div class="post-sub">Hotel Management · RIIC</div>
+      </div>
+      <div class="card-info">
+        <span class="card-platform">Instagram</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+    <div class="post-card" style="grid-column: 1 / -1;">
+      <div class="post-card-inner" style="--gradient: linear-gradient(135deg, #0a0a0a, #222); aspect-ratio: 16/5;">
+        <span class="post-badge">Banner</span>
+        <div class="post-title" style="font-size:2.2rem;">READING RIGHTS,<br><span style="color:var(--green);">WRITING DREAMS</span></div>
+        <div class="post-sub">YouTube / Facebook banner</div>
+      </div>
+      <div class="card-info">
+        <span class="card-platform">YouTube · Facebook</span>
+        <span class="card-dot"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Printing Media -->
+<section id="print" class="print-section">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-title-group">
+      <div class="section-tag">Category Two</div>
+      <h2 class="section-title">PRINTING MEDIA <span class="outline">DESIGN</span></h2>
+    </div>
+    <div class="divider"></div>
+  </div>
+  <div class="print-grid">
+    <div class="print-card">
+      <div class="print-visual menu-bg">
+        <span>MENU</span>
+        <span class="print-visual-icon">☕</span>
+      </div>
+      <div class="print-info">
+        <div class="print-name">Café Menu Design</div>
+        <div class="print-desc">Full menu layout for Pinaki Cafe — milk base, water base teas, cold beverages, kathi rolls, momo and more.</div>
+      </div>
+    </div>
+    <div class="print-card">
+      <div class="print-visual banner-bg">
+        <span>BANNER</span>
+        <span class="print-visual-icon">🚪</span>
+      </div>
+      <div class="print-info">
+        <div class="print-name">ALTWOOD Flex Banners</div>
+        <div class="print-desc">Outdoor flex banners for Digital Print Doors, PVC CNC Jali, and Louvers product lines.</div>
+      </div>
+    </div>
+    <div class="print-card">
+      <div class="print-visual catalog-bg">
+        <span>CATALOGUE</span>
+        <span class="print-visual-icon">📋</span>
+      </div>
+      <div class="print-info">
+        <div class="print-name">Product Catalogue</div>
+        <div class="print-desc">Multi-page product catalogue for ALTWOOD PVC/WPC door and door frame collections.</div>
+      </div>
+    </div>
+    <div class="print-card">
+      <div class="print-visual" style="background: linear-gradient(135deg, #200000, #4a0000); height:200px;">
+        <span>BILLBOARD</span>
+        <span class="print-visual-icon">📢</span>
+      </div>
+      <div class="print-info">
+        <div class="print-name">PVC Board Campaign</div>
+        <div class="print-desc">Large-format billboard: "PVC Board Built to Last" — waterproof, termite-proof, fire-retardant messaging.</div>
+      </div>
+    </div>
+    <div class="print-card wide">
+      <div class="print-visual wide-bg">
+        <span>SNACK MENU — FULL SPREAD</span>
+      </div>
+      <div class="print-info">
+        <div class="print-name">Extended Food Menu</div>
+        <div class="print-desc">Comprehensive food menu including Chowmein, Momo (Steam/Fry/Chilly/Jhol/Sadeko), Noodles, Sandwiches, Burgers, Sadeko items, Khaja sets and more.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CNC Section -->
+<section id="cnc" style="background: var(--black);">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-title-group">
+      <div class="section-tag">Category Three</div>
+      <h2 class="section-title">CNC GROOVING <span class="outline">&amp; JALI</span></h2>
+    </div>
+    <div class="divider"></div>
+  </div>
+  <div class="cnc-grid">
+    <div class="cnc-card">
+      <div class="cnc-num">01</div>
+      <div class="cnc-name">CNC GROOVING <span>Design</span></div>
+      <p class="cnc-desc">Precision 2D door grooving patterns crafted for PVC and wood doors. Each design is engineered for CNC cutting with clean lines, geometric precision, and modern aesthetics that complement contemporary interiors.</p>
+      <span class="cnc-count">100+ Door Designs</span>
+    </div>
+    <div class="cnc-card">
+      <div class="cnc-num">02</div>
+      <div class="cnc-name">CNC JALI <span>Design</span></div>
+      <p class="cnc-desc">Intricate cutout jali patterns inspired by traditional Indian motifs — Ganesha, Om, lotus mandalas, floral spirals, and geometric weaves. Designed for PVC panels and room dividers.</p>
+      <span class="cnc-count">Multiple Patterns</span>
+    </div>
+  </div>
+
+  <!-- Design preview strips -->
+  <div style="margin-top:2.5rem; display:flex; gap:0.6rem; overflow:hidden;">
+    <div style="flex:1;height:80px;background:linear-gradient(135deg,#1a0a0a,#3d1515);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">CLASSIC PANEL</div>
+    <div style="flex:1;height:80px;background:linear-gradient(135deg,#0a1a0a,#153d15);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">GRID PATTERN</div>
+    <div style="flex:1;height:80px;background:linear-gradient(135deg,#0a0a1a,#15153d);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">ARCH STYLE</div>
+    <div style="flex:1;height:80px;background:linear-gradient(135deg,#1a1a0a,#3d3d15);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">DIAMOND LINES</div>
+    <div style="flex:1;height:80px;background:linear-gradient(135deg,#1a0a1a,#3d153d);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.15em;color:rgba(255,255,255,0.4);">OVAL CLASSIC</div>
+  </div>
+</section>
+
+<!-- CTA / Contact -->
+<section class="cta-section" id="contact">
+  <div class="cta-tag">Let's Create Together</div>
+  <h2 class="cta-title">
+    LETS WORK<br>
+    <span class="outline">TOGETHER</span>
+  </h2>
+  <span class="cta-script">Lets woek together ✦</span>
+  <br>
+  <a href="tel:+9779825028893" class="cta-phone">
+    <span class="cta-dot"></span>
+    +977-9825028893
+  </a>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">ABH<span>i</span> Dutta</div>
+  <ul class="footer-services">
+    <li>Social Media</li>
+    <li>Print Media</li>
+    <li>CNC Design</li>
+  </ul>
+  <div class="footer-copy">Designed by ABHi · Graphic Designer · Nepal</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+  function animRing() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+  animRing();
+
+  // Hover effects on interactive elements
+  document.querySelectorAll('a, button, .post-card, .print-card, .cnc-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.post-card, .print-card, .cnc-card').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = `opacity 0.5s ${i * 0.07}s, transform 0.5s ${i * 0.07}s, border-color 0.3s`;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
